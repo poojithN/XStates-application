@@ -13,7 +13,9 @@ useEffect(()=>{
     fetch("https://location-selector.labs.crio.do/countries")
     .then((res)=>res.json())
     .then((data)=>setCountries(data))
-    .catch((err) => console.log(err));
+    .catch((error) => {
+        console.error("Error fetching countries:", error);
+    });
 
 },[])
 useEffect(()=>{
@@ -26,7 +28,9 @@ if(selectedCountries){
         setCity([]);
         setSelectedCity("");
     })
-    .catch((err)=>console.log(err))
+    .catch((error) => {
+        console.error("Error fetching states:", error);
+    })
 }
 },[selectedCountries])
 useEffect(()=>{
@@ -37,7 +41,9 @@ useEffect(()=>{
             setCity(data);
             setSelectedCity("");
         })
-        .catch((err)=>console.log(err))
+        .catch((error) => {
+        console.error("Error fetching cities:", error);
+    })
     }
 },[selectedStates])
 
