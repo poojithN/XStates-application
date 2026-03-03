@@ -34,7 +34,7 @@ if(selectedCountries){
 }
 },[selectedCountries])
 useEffect(()=>{
-    if(selectedCountries || selectedStates){
+    if(selectedCountries && selectedStates){
         fetch(`https://location-selector.labs.crio.do/country=${selectedCountries}/state=${selectedStates}/cities`)
         .then((res)=>res.json())
         .then((data)=>{
