@@ -1,9 +1,9 @@
-import Country from "./Country"
+import CitySelector from "./CitySelector"
 function App() {
 
   return (
     <div>
-      <Country />
+      <CitySelector/>
     </div>
   )
 }

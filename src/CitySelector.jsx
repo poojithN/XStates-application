@@ -1,6 +1,6 @@
 import { useEffect,useState } from "react";
 import "./Country.css";
-function Country(){
+function CitySelector(){
 const [countries,setCountries] = useState([]);
 const [states,setStates] = useState([]);
 const [city,setCity] = useState([]);
@@ -83,4 +83,4 @@ return(
 )
 }
 
-export default Country;
+export default CitySelector;
