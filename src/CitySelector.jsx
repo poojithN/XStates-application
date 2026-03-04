@@ -1,52 +1,42 @@
 import { useEffect, useState } from "react";
-import "./Country.css";
+import "./CitySelector.css";
+import axios from "axios";
 
 function CitySelector() {
 
-  // ---------------- STATES ----------------
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
-  const [city, setCity] = useState([]);
+  const [city, setCities] = useState([]);
 
   const [selectedCountries, setSelectedCountries] = useState("");
   const [selectedStates, setSelectedStates] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
 
   useEffect(() => {
-    fetch("https://location-selector.labs.crio.do/countries")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("API failed");
-        }
-        return res.json();
-      })
-      .then((data) => setCountries(data))
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
+    axios
+    .get("https://location-selector.labs.crio.do/countries")
+    .then((response)=>{
+      setCountries(response.data);
+    })
+    .catch((error)=>{
+      console.error("Error fetching Countries:", error);
+    });
   }, []);
 
   useEffect(() => {
     if (selectedCountries) {
-      fetch(
+      axios
+      .get(
         `https://location-selector.labs.crio.do/country=${selectedCountries}/states`
       )
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error("API failed");
-          }
-          return res.json();
-        })
-        .then((data) => {
-          setStates(data);
-
-          // reset lower selections
+        .then((response) => {
+          setStates(response.data);
           setSelectedStates("");
-          setCity([]);
+          setCities([]);
           setSelectedCity("");
         })
         .catch((error) => {
-          console.error("Error fetching data:", error);
+          console.error("Error fetching states:", error);
         });
     }
   }, [selectedCountries]);
@@ -54,21 +44,16 @@ function CitySelector() {
 
   useEffect(() => {
     if (selectedCountries && selectedStates) {
-      fetch(
+      axios
+      .get(
         `https://location-selector.labs.crio.do/country=${selectedCountries}/state=${selectedStates}/cities`
       )
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error("API failed");
-          }
-          return res.json();
-        })
-        .then((data) => {
-          setCity(data);
+        .then((response) => {
+          setCities(response.data);
           setSelectedCity("");
         })
         .catch((error) => {
-          console.error("Error fetching data:", error);
+          console.error("Error fetching cities:", error);
         });
     }
   }, [selectedStates, selectedCountries]);
