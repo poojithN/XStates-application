@@ -36,3 +36,18 @@ h3 {
   display: flex;
   justify-items: center;
 }
+.sc{
+  font-weight: bold;
+  font-size: 25px;
+  color: black;
+
+}
+.d{
+  color: #888;
+}
+.final{
+  margin-top: 20px;
+  font-size: 20px;
+  color: black;
+
+}

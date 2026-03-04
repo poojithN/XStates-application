@@ -112,9 +112,13 @@ function CitySelector() {
       </div>
 
       {selectedCity && (
-        <h3>
-          You selected {selectedCity}, {selectedState}, {selectedCountry}
-        </h3>
+         <h2 className="final">
+          You selected <span className="sc">{selectedCity}</span>,
+          <span className="d">
+            {" "}
+            {selectedState}, {selectedCountry}
+          </span>
+        </h2>
       )}
     </div>
   );
