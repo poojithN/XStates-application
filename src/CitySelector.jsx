@@ -12,14 +12,18 @@ function CitySelector() {
   const [selectedStates, setSelectedStates] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
 
+  const [countryError, setCountryError] = useState("");
+
   useEffect(() => {
     axios
     .get("https://location-selector.labs.crio.do/countries")
     .then((response)=>{
       setCountries(response.data);
+      setCountryError("");
     })
     .catch((error)=>{
       console.error("Error fetching Countries:", error);
+      setCountryError("Failed to load countries");
     });
   }, []);
 
@@ -68,13 +72,18 @@ function CitySelector() {
         <select
           value={selectedCountry}
           onChange={(e) => setSelectedCountry(e.target.value)}
+          data-testid="country-dropdown" // ✅ For Cypress
         >
           <option value="">Select Country</option>
-          {countries.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
+          {countryError ? (
+            <option disabled>{countryError}</option> // ✅ Show error in dropdown
+          ) : (
+            countries.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))
+          )}
         </select>
 
         {/* STATE */}
