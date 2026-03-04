@@ -8,7 +8,7 @@ function CitySelector() {
   const [states, setStates] = useState([]);
   const [city, setCities] = useState([]);
 
-  const [selectedCountries, setSelectedCountries] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedStates, setSelectedStates] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
 
@@ -24,10 +24,10 @@ function CitySelector() {
   }, []);
 
   useEffect(() => {
-    if (selectedCountries) {
+    if (selectedCountry) {
       axios
       .get(
-        `https://location-selector.labs.crio.do/country=${selectedCountries}/states`
+        `https://location-selector.labs.crio.do/country=${selectedCountry}/states`
       )
         .then((response) => {
           setStates(response.data);
@@ -39,14 +39,14 @@ function CitySelector() {
           console.error("Error fetching states:", error);
         });
     }
-  }, [selectedCountries]);
+  }, [selectedCountry]);
 
 
   useEffect(() => {
-    if (selectedCountries && selectedStates) {
+    if (selectedCountry && selectedStates) {
       axios
       .get(
-        `https://location-selector.labs.crio.do/country=${selectedCountries}/state=${selectedStates}/cities`
+        `https://location-selector.labs.crio.do/country=${selectedCountry}/state=${selectedStates}/cities`
       )
         .then((response) => {
           setCities(response.data);
@@ -56,7 +56,7 @@ function CitySelector() {
           console.error("Error fetching cities:", error);
         });
     }
-  }, [selectedStates, selectedCountries]);
+  }, [selectedStates, selectedCountry]);
 
   return (
     <div className="container">
@@ -66,8 +66,8 @@ function CitySelector() {
 
         {/* COUNTRY */}
         <select
-          value={selectedCountries}
-          onChange={(e) => setSelectedCountries(e.target.value)}
+          value={selectedCountry}
+          onChange={(e) => setSelectedCountry(e.target.value)}
         >
           <option value="">Select Country</option>
           {countries.map((c) => (
@@ -81,7 +81,7 @@ function CitySelector() {
         <select
           value={selectedStates}
           onChange={(e) => setSelectedStates(e.target.value)}
-          disabled={!selectedCountries}
+          disabled={!selectedCountry}
         >
           <option value="">Select State</option>
           {states.map((s) => (
@@ -109,7 +109,7 @@ function CitySelector() {
 
       {selectedCity && (
         <h3>
-          You selected {selectedCity}, {selectedStates}, {selectedCountries}
+          You selected {selectedCity}, {selectedStates}, {selectedCountry}
         </h3>
       )}
     </div>
