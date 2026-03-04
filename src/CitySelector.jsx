@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./CitySelector.css";
 import axios from "axios";
 
@@ -6,24 +6,22 @@ function CitySelector() {
 
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
-  const [city, setCities] = useState([]);
+  const [cities, setCities] = useState([]);
 
   const [selectedCountry, setSelectedCountry] = useState("");
-  const [selectedStates, setSelectedStates] = useState("");
+  const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
 
-  const [countryError, setCountryError] = useState("");
+
 
   useEffect(() => {
     axios
     .get("https://location-selector.labs.crio.do/countries")
     .then((response)=>{
       setCountries(response.data);
-      setCountryError("");
     })
     .catch((error)=>{
-      console.error("Error fetching Countries:", error);
-      setCountryError("Failed to load countries");
+      console.error("Error fetching countries:", error);
     });
   }, []);
 
@@ -35,7 +33,7 @@ function CitySelector() {
       )
         .then((response) => {
           setStates(response.data);
-          setSelectedStates("");
+          setSelectedState("");
           setCities([]);
           setSelectedCity("");
         })
@@ -47,10 +45,10 @@ function CitySelector() {
 
 
   useEffect(() => {
-    if (selectedCountry && selectedStates) {
+    if (selectedCountry && selectedState) {
       axios
       .get(
-        `https://location-selector.labs.crio.do/country=${selectedCountry}/state=${selectedStates}/cities`
+        `https://location-selector.labs.crio.do/country=${selectedCountry}/state=${selectedState}/cities`
       )
         .then((response) => {
           setCities(response.data);
@@ -60,7 +58,7 @@ function CitySelector() {
           console.error("Error fetching cities:", error);
         });
     }
-  }, [selectedStates, selectedCountry]);
+  }, [selectedState, selectedCountry]);
 
   return (
     <div className="container">
@@ -72,24 +70,21 @@ function CitySelector() {
         <select
           value={selectedCountry}
           onChange={(e) => setSelectedCountry(e.target.value)}
-          data-testid="country-dropdown" // ✅ For Cypress
         >
-          <option value="">Select Country</option>
-          {countryError ? (
-            <option disabled>{countryError}</option> // ✅ Show error in dropdown
-          ) : (
-            countries.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))
-          )}
+          <option value="" disabled>
+            Select Country
+          </option>
+          {countries.map((country) => (
+            <option key={country} value={country}>
+              {country}
+            </option>
+          ))}
         </select>
 
         {/* STATE */}
         <select
-          value={selectedStates}
-          onChange={(e) => setSelectedStates(e.target.value)}
+          value={selectedState}
+          onChange={(e) => setSelectedState(e.target.value)}
           disabled={!selectedCountry}
         >
           <option value="">Select State</option>
@@ -104,10 +99,10 @@ function CitySelector() {
         <select
           value={selectedCity}
           onChange={(e) => setSelectedCity(e.target.value)}
-          disabled={!selectedStates}
+          disabled={!selectedState}
         >
           <option value="">Select City</option>
-          {city.map((c) => (
+          {cities.map((c) => (
             <option key={c} value={c}>
               {c}
             </option>
@@ -118,7 +113,7 @@ function CitySelector() {
 
       {selectedCity && (
         <h3>
-          You selected {selectedCity}, {selectedStates}, {selectedCountry}
+          You selected {selectedCity}, {selectedState}, {selectedCountry}
         </h3>
       )}
     </div>
